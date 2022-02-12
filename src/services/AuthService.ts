@@ -8,11 +8,13 @@ import ApplicationProfile from './../models/ApplicationProfile';
 const axios = require("axios");
 
 
-const LOGIN_URL = Settings.App.hosts.api + "/api/auth/login";
-const LOAD_APP_URL = Settings.App.hosts.api + "/api/public/index";
+const LOGIN_URL     = Settings.App.hosts.api + "/api/auth/login";
+const REGISTER_URL  = Settings.App.hosts.api + "/api/auth/register";
+const LOAD_APP_URL  = Settings.App.hosts.api + "/api/public/index";
 
 @injectable()
 export default class AuthService {
+     
     private _loggedUser:User | undefined;
     private _appProfile:ApplicationProfile | undefined;
     private _onUserUpdate:Map<string, (user:User | undefined) =>any> = new Map();
@@ -70,7 +72,30 @@ export default class AuthService {
                 this.handleSuccessLogin(responseJson.result, loginKey);
                 resolve(responseJson.result);
             }).catch((err:AxiosError) =>{
-                reject(err.response?.data)
+                reject(err.response?.data ?? new Error(err.message))
+            });
+        });
+    }
+    register = (
+        email: string, 
+        name:string, 
+        displayName:string,
+        password: string ): Promise<User> => {
+
+        return new Promise<User>((resolve, reject) => {
+            
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("password", password);
+            formData.append("name", name);
+            formData.append("displayName", displayName);
+
+            axios.post(REGISTER_URL, formData, {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then((response: AxiosResponse) => {
+                resolve(response.data.result);
+            }).catch((err:AxiosError) =>{
+                reject(err.response?.data ?? new Error(err.message))
             });
         });
     }
