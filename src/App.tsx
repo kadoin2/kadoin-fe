@@ -12,6 +12,7 @@ import { Chart as ChartJS, CategoryScale, Legend, LinearScale, LineElement, Poin
 import DialogProps from './models/DialogProps';
 import AuthService from './services/AuthService';
 import { invokeLater } from './utils/eventUtil';
+import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(
   CategoryScale,

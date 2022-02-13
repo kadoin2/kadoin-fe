@@ -9,6 +9,7 @@ import AuthService from './../services/AuthService';
 import ControlledComponent from "../pages/ControlledComponent";
 import UserSection from "./UserSection";
 import User from './../models/User';
+import EventService from './../services/EventService';
 
 class State {
     activeMenu:string | undefined;
@@ -16,7 +17,7 @@ class State {
     searchKey:string    = "";
  }
  class Props extends BaseProps {
-     currentLocation?:Location
+     currentLocation?:Location;
  }
 class HeaderView extends ControlledComponent<Props, State>
 {
@@ -24,6 +25,8 @@ class HeaderView extends ControlledComponent<Props, State>
     private authService:AuthService;
     @resolve(RoutingService)
     private routingService:RoutingService;
+    @resolve(EventService)
+    private evtService:EventService;
 
     state:State = new State();
 
@@ -50,6 +53,7 @@ class HeaderView extends ControlledComponent<Props, State>
             this.gotoLoginPage();
         }
         this._user = user;
+        this.forceUpdate();
     }
 
     private navigate = (url:string) => {
@@ -71,6 +75,8 @@ class HeaderView extends ControlledComponent<Props, State>
         {
             return;
         }
+        this.navigate("/search/"+this.state.searchKey);
+        this.evtService.triggerProductSearchUpdate(this.state.searchKey);
     }
 
     render() {

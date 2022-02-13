@@ -2,16 +2,16 @@
 import { getCookie, setCookie, removeCookie } from './cookieUtil';
 const LOGIN_KEY_NAME = "kado-in-login-token"
 
-export const commonAuthorizedHeader = () => {
+export const commonAuthorizedHeader = (contentType:string = 'application/json') => {
     return {
-        'Content-Type': 'application/json',
+        'Content-Type': contentType,
         'requestId': "ABCD",// getRequestId(),//'localStorage.getItem("requestId")',
         'Authorization': 'Bearer '+getCookie(LOGIN_KEY_NAME)
     }
 };
-export const commonHeader = () => {
+export const commonHeader = (contentType:string = 'application/json') => {
     return {
-        'Content-Type': 'application/json',
+        'Content-Type': contentType,
         // 'requestId': getRequestId(), 
     }
 };

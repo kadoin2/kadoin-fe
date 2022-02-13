@@ -1,14 +1,15 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import User from "../models/User";
 import Settings from './../settings';
 import WebResponse from './../models/WebResponse';
-import { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { removeLoginKeyCookie, setLoginKeyCookie,commonAuthorizedHeader } from './../utils/restApiUtil';
 import ApplicationProfile from './../models/ApplicationProfile';
-const axios = require("axios");
+import RestClient from './../apiClients/RestClient';
 
 
 const LOGIN_URL     = Settings.App.hosts.api + "/api/auth/login";
+const LOGOUT_URL    = Settings.App.hosts.api + "/api/auth/logout";
 const REGISTER_URL  = Settings.App.hosts.api + "/api/auth/register";
 const LOAD_APP_URL  = Settings.App.hosts.api + "/api/public/index";
 
@@ -18,6 +19,9 @@ export default class AuthService {
     private _loggedUser:User | undefined;
     private _appProfile:ApplicationProfile | undefined;
     private _onUserUpdate:Map<string, (user:User | undefined) =>any> = new Map();
+
+    @inject(RestClient)
+    private rest:RestClient;
  
     get loggedIn() { return this._loggedUser != undefined; }
 
@@ -55,7 +59,7 @@ export default class AuthService {
     }
 
     login = (email: string, password: string): Promise<User> => {
-
+        
         return new Promise<User>((resolve, reject) => {
             
             const formData = new FormData();
@@ -82,22 +86,12 @@ export default class AuthService {
         displayName:string,
         password: string ): Promise<User> => {
 
-        return new Promise<User>((resolve, reject) => {
-            
-            const formData = new FormData();
-            formData.append("email", email);
-            formData.append("password", password);
-            formData.append("name", name);
-            formData.append("displayName", displayName);
-
-            axios.post(REGISTER_URL, formData, {
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            }).then((response: AxiosResponse) => {
-                resolve(response.data.result);
-            }).catch((err:AxiosError) =>{
-                reject(err.response?.data ?? new Error(err.message))
-            });
-        });
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("name", name);
+        formData.append("displayName", displayName);
+        return this.rest.postCommon(REGISTER_URL, formData, { 'Content-Type': 'application/x-www-form-urlencoded' });
     }
 
     handleSuccessLogin = (user:User, token:string) => {
@@ -115,5 +109,6 @@ export default class AuthService {
     logout = () => {
         removeLoginKeyCookie();
         this.loggedUser = undefined;
+        return this.rest.postAuthorized(LOGOUT_URL, {});
     }
 }

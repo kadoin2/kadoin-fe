@@ -6,6 +6,7 @@ import RegisterPage from '../pages/auth/RegisterPage';
 import { ErrorView } from '../pages/error/ErrorView';
 // import { ExperimentView } from '../pages/experiments/extended/ExperimentView';
 import Home from '../pages/home/Home';
+import SearchPage from '../pages/product/SearchPage';
 export class Routing extends Component<BaseProps, any>
 {
 
@@ -20,6 +21,8 @@ export class Routing extends Component<BaseProps, any>
                     
                     <Route path="/login" element={ <LoginPage/> } /> 
                     <Route path="/register" element={ <RegisterPage/> } /> 
+
+                    <Route path="/search/:searchKey" element={ <SearchPage/> } /> 
                     
                     <Route path="*" element={ <ErrorView    message="Not Found" /> } />
                 </Routes>

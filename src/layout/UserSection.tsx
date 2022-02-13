@@ -5,6 +5,7 @@ import { resolve } from "inversify-react";
 import AuthService from './../services/AuthService';
 import DialogService from './../services/DialogService';
 import BaseProps from './../models/BaseProps';
+import { Link } from "react-router-dom";
 
 interface Props  extends BaseProps
 {
@@ -47,7 +48,10 @@ class UserSection extends Component<Props, State>
                     <div
                         style={{width: '200px'}}
                         className="bg-light border border-gray rounded text-left pt-3 pb-3" >
-                        
+                        { this.props.user.role == 'Admin' ?
+                        <Link className="btn btn-text text-success" to="/admin">
+                            <i className="fas fa-tachometer-alt mr-3"/>Admin Area
+                        </Link> : null }
                         <a className="btn btn-text text-danger" onClick={this.logout}>
                             <i className="fas fa-sign-out-alt mr-3"/>Logout
                         </a>

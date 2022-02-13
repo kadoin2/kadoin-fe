@@ -1,6 +1,6 @@
-const ErrorMessage = (props:{children:any, show:boolean}) => {
+const ErrorMessage = (props:{children:any, show?:boolean}) => {
 
-    if (props.show == false)
+    if (props.show === false)
     {
         return null;
     }
