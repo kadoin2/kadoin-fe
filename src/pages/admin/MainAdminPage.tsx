@@ -18,9 +18,13 @@ class MainAdminPage extends BasePage<BaseProps, State>
         super(props, true, "Admin Area");
     }
     componentDidMount(): void {
+        this.forceUpdate();
+    }
+    componentDidUpdate(): void {
         if (!this.authService.loggedIn || this.authService.loggedUser?.role !== 'Admin')
         {
             this.gotoHomePage();
+            console.log("not admin!");
         }
     }
     render(): ReactNode {

@@ -28,6 +28,7 @@ export default class AuthService {
     get loggedUser() { 
         return this._loggedUser; 
     }
+    get isAdmin() { return this.loggedIn && this.loggedUser?.role === 'Admin' }
     get appProfile()
     {
         return this._appProfile;

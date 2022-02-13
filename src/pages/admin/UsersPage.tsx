@@ -18,11 +18,7 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
         super(props, "users", "User Management")
     }
     get defaultItem(): User { return new User() }
-    componentDidMount(): void {
-        if (this.validate()) {
-            this.load();
-        }
-    }
+    
     render(): ReactNode {
         if (!this.validate()) {
             return null;

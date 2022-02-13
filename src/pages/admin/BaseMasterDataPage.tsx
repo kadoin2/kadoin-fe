@@ -28,7 +28,7 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
             .catch(console.error);
     }
     componentDidMount(): void {
-        this.validate();   
+        this.load();
     }
     onFormSubmit = (e:FormEvent) => {
         e.preventDefault();

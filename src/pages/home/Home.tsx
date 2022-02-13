@@ -23,7 +23,7 @@ class Home extends BasePage<BaseProps, State>
 
     constructor(props: any) {
         super(props);
-
+        this.title = 
         this.welcomingWord = Settings.App.uiSetting.defaultTitle;
     }
     componentDidMount() {
