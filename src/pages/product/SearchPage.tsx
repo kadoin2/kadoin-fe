@@ -128,7 +128,7 @@ const SearchResult = (props:{
             {props.result.items.map((item)=>{
 
                 return (
-                    <div className="col-md-2 mt-2">
+                    <div key={"search_result_"+item.link} className="col-md-2 mt-2">
                         <div className="border border-gray pt-1 pb-1 pl-1 pr-1">
                             <div style={{
                                 backgroundImage: `url(${item.image.thumbnailLink})`,

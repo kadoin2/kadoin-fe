@@ -109,10 +109,10 @@ class ProductsPage extends BaseMasterDataPage<Product, BaseProps, State>
                                             <td>{item.description}</td>
                                             <td>{item.price}</td>
                                             <td>
-                                                <img className="border" src={item.image} width={50} height={50} />
+                                                <img className="border"  alt={item.image} src={item.image} width={50} height={50} />
                                                 <br/>
                                                 <a target={"_blank"} href={item.image}>
-                                                    {item.image}
+                                                    view
                                                 </a>
                                             </td>
                                             <td>

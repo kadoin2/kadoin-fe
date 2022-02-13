@@ -163,6 +163,9 @@ class LoginPage extends BasePage<BaseProps, State>
                         <ActionButton className="btn btn-success mt-3">
                             Register
                         </ActionButton> }
+                        <p className="mt-3">
+                            Already have account? <Link to="/login">Login</Link>
+                        </p>
                     </div>
                 </form>
             </ViewTemplate>
