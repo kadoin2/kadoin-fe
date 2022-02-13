@@ -5,6 +5,6 @@ export default class User
     name:string;
     displayName:string;
     role:UserRole;
-    
+    phoneNumber:string;
 
 }

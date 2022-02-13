@@ -9,6 +9,7 @@ import ErrorMessage from './../../components/messages/ErrorMessage';
 import InfoMessage from './../../components/messages/InfoMessage';
 import { invokeLater } from './../../utils/eventUtil';
 import ActionButton from './../../components/buttons/ActionButton';
+import { CommonTable } from "../../utils/componentUtil";
 
 class State  extends BaseState
 {
@@ -66,31 +67,39 @@ class LoginPage extends BasePage<BaseProps, State>
         }
         return (
             <ViewTemplate >
-                <form onSubmit={this.onSubmit} className="row mt-5 pt-5">
+                <form onSubmit={this.onSubmit} className="row mt-3 ">
                     <div className="col-md-4"/>
                     <div className="col-md-4 bg-light" style={{padding: 20}}>
                         
                         <ErrorMessage show={this.state.error != undefined}>
                             {this.state.error?.message}
                         </ErrorMessage> 
-                        
-
-                        <p>Email</p>
-                        <input 
-                            type="email"
-                            name="email"
-                            value={this.state.email}
-                            onChange={this.handleInputChange}
-                            className="form-control" 
-                            required/>
-                        <p>Password</p>
-                        <input 
-                            type="password"
-                            name="password"
-                            value={this.state.password}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required/>
+                        <CommonTable
+                            className="table table-borderless"
+                            content={[
+                                [
+                                    "Email",
+                                    <input 
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={this.state.email}
+                                        onChange={this.handleInputChange}
+                                        className="form-control" 
+                                        required/>            
+                                ],
+                                [
+                                    "Password",
+                                    <input 
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        value={this.state.password}
+                                        onChange={this.handleInputChange}
+                                        className="form-control"
+                                        required/>
+                                ]
+                            ]} />
                         { this.state.loading? 
                         <i>Please wait...</i> : 
                         <ActionButton className="btn btn-success mt-3">

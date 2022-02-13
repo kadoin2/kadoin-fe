@@ -84,13 +84,15 @@ export default class AuthService {
         email: string, 
         name:string, 
         displayName:string,
-        password: string ): Promise<User> => {
+        password: string,
+        phone:string ): Promise<User> => {
 
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
         formData.append("name", name);
         formData.append("displayName", displayName);
+        formData.append("phoneNumber", phone);
         return this.rest.postCommon(REGISTER_URL, formData, { 'Content-Type': 'application/x-www-form-urlencoded' });
     }
 

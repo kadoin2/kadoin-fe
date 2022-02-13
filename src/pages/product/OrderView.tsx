@@ -13,6 +13,7 @@ class State
 {
     loggedIn: boolean = false;
     orderCount: number = 0;
+    phoneNumber: string  = "";
 }
 export default class OrderView extends ControlledComponent<Props, State>
 {
@@ -26,7 +27,7 @@ export default class OrderView extends ControlledComponent<Props, State>
     }
     componentDidMount()
     {
-        this.setState({ loggedIn: this.authService.loggedIn });
+        this.setState({ loggedIn: this.authService.loggedIn, phoneNumber: this.authService.loggedUser?.phoneNumber ?? "" });
     }
     onSubmit = (e:FormEvent) => {
         e.preventDefault();
@@ -56,10 +57,17 @@ export default class OrderView extends ControlledComponent<Props, State>
                                 name="orderCount"
                                 value={this.state.orderCount} 
                                 onChange={this.handleInputChange}
-                                className='form-control mb-3'
+                                className='form-control mb-2'
                                 min={1}
                                 required />
-                            <input type='submit' className='btn btn-success' value={'Submit'} />
+                            <p>Phone Number</p>
+                            <input
+                                name="phoneNumber"
+                                value={this.state.phoneNumber}
+                                onChange={this.handleInputChange}
+                                className="form-control mb-2"
+                                required />
+                            <input type='submit' className='btn btn-success mt-2' value={'Submit'} />
                         </form>
                     </div>
                 </div>

@@ -80,7 +80,7 @@ class SearchPage extends BasePage<BaseProps, State>
         }
         return (
             <ViewTemplate>
-                <div className="row w-100 ">
+                <div className="row w-100 mb-5 ">
                    
                     { this.state.loading ?
                     <div className="col-12 text-center"><i>Loading...</i></div> :
