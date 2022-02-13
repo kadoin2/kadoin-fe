@@ -5,11 +5,14 @@ import { commonWrapper } from "../../utils/commonWrapper";
 import { BasePage } from "../BasePage";
 import BaseProps from './../../models/BaseProps';
 import BaseState from './../../models/BaseState';
-import ProductSearchResult from './../../models/ProductSearchResult';
+import ProductSearchResult from '../../models/product/ProductSearchResult';
 import ProductService from './../../services/ProductService';
 import { resolve } from 'inversify-react';
 import ErrorMessage from "../../components/messages/ErrorMessage";
 import EventService from './../../services/EventService';
+import SearchResultItem from './../../models/product/SearchResultItem';
+import DialogService from './../../services/DialogService';
+import OrderView from "./OrderView";
 
 class State extends BaseState
 {
@@ -63,6 +66,9 @@ class SearchPage extends BasePage<BaseProps, State>
         }
         this.search(this.state.searchKey, i);
     }
+    order = (item:SearchResultItem) => {
+        this.dialog.showContent("Order Item", <OrderView item={item}/>)
+    }
     render(): ReactNode {
         if (!this.state.searchKey)
         {
@@ -85,7 +91,8 @@ class SearchPage extends BasePage<BaseProps, State>
                     <SearchResult 
                         gotoIndex={this.gotoIndex}
                         searchKey={this.state.searchKey} 
-                        result={this.state.searchResult}/>}
+                        result={this.state.searchResult}
+                        order={this.order}/>}
                 </div>
             </ViewTemplate>
         )
@@ -94,7 +101,11 @@ class SearchPage extends BasePage<BaseProps, State>
 
 export default commonWrapper(SearchPage);
 
-const SearchResult = (props:{searchKey:string, result: ProductSearchResult, gotoIndex:(i:number)=>any}) => {
+const SearchResult = (props:{
+    searchKey:string, 
+    result: ProductSearchResult, 
+    order:(item:SearchResultItem) => any,
+    gotoIndex:(i:number)=>any}) => {
     const nextPage = props.result.queries.nextPage;
     const reqPage  = props.result.queries.request;
     return (
@@ -134,6 +145,9 @@ const SearchResult = (props:{searchKey:string, result: ProductSearchResult, goto
                             <label dangerouslySetInnerHTML={{
                                 __html: item.htmlTitle
                             }}></label>
+                            <a className="btn btn-primary btn-sm" onClick={()=>props.order(item)}>
+                                Order
+                            </a>
                         </div>
                     </div>
                 )

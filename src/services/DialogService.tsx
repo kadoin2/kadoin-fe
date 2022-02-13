@@ -129,9 +129,9 @@ export default class DialogService
         this.container.dismissAlert();
     }
 
-    public showContent = ( title:string, content: ReactElement<DialogProps, typeof Component> ) => {
+    public showContent = ( title:string, content: ReactElement<any, typeof Component> ) => {
         return new Promise<boolean>((resolve, reject) => {
-            let el = createElement(content.type, { });
+            let el = createElement(content.type, content.props);
             this.container.showNoButtons(  title, el, (e:any) => { resolve(false) }  );
         });
     }

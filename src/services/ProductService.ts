@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import ProductSearchResult from "../models/ProductSearchResult";
+import ProductSearchResult from "../models/product/ProductSearchResult";
 import Settings from "../settings";
 import RestClient from './../apiClients/RestClient';
 
