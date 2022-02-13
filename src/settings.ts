@@ -24,7 +24,7 @@ export default class Settings {
             return this._setting;
         }
          
-        return this._setting = (window as any).stampedeSetting;
+        return this._setting = (window as any).appSetting;
     }
     
 }

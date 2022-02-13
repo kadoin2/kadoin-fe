@@ -14,6 +14,8 @@ class State
     loggedIn: boolean = false;
     orderCount: number = 0;
     phoneNumber: string  = "";
+    note: string = "";
+    address: string = "";
 }
 export default class OrderView extends ControlledComponent<Props, State>
 {
@@ -67,6 +69,20 @@ export default class OrderView extends ControlledComponent<Props, State>
                                 onChange={this.handleInputChange}
                                 className="form-control mb-2"
                                 required />
+                            <p>Address</p>
+                            <textarea
+                                name="address"
+                                value={this.state.address}
+                                onChange={this.handleInputChange}
+                                className="form-control mb-2"
+                                required />
+                            <p>Note</p>
+                            <textarea
+                                name="note"
+                                value={this.state.note}
+                                onChange={this.handleInputChange}
+                                className="form-control mb-2"
+                                 />
                             <input type='submit' className='btn btn-success mt-2' value={'Submit'} />
                         </form>
                     </div>

@@ -46,12 +46,15 @@ class UserSection extends Component<Props, State>
                 <div style={{position: 'absolute'}}>
                     { this.state.showDropdown? 
                     <div
-                        style={{width: '200px'}}
+                        style={{width: '200px', zIndex: 1, position: 'relative'}}
                         className="bg-light border border-gray rounded text-left pt-3 pb-3" >
                         { this.props.user.role == 'Admin' ?
                         <Link className="btn btn-text text-success" to="/admin">
                             <i className="fas fa-tachometer-alt mr-3"/>Admin Area
                         </Link> : null }
+                        <Link className="btn btn-text text-info" to="/myorder">
+                            <i className="fas fa-shopping-cart mr-3"/>My Orders
+                        </Link>
                         <a className="btn btn-text text-danger" onClick={this.logout}>
                             <i className="fas fa-sign-out-alt mr-3"/>Logout
                         </a>

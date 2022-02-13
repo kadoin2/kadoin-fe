@@ -63,7 +63,7 @@ export default class DialogService
         this.container.show(
             DialogType.ERROR,
             title,
-            message instanceof Error ? message.message : message,
+            message instanceof Error ? message.message : message.toString(),
             true,
             console.error
         );

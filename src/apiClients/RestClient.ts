@@ -8,11 +8,52 @@ export default class RestClient
     postAuthorized = <T>(url:string, body:any, contentType='application/json') : Promise<T> => {
         return this.postCommon(url, body, commonAuthorizedHeader(contentType));
     }
+    deleteAuthorized = <T>(url:string, contentType='application/json') : Promise<T> => {
+        return this.deleteCommon(url, commonAuthorizedHeader(contentType));
+    }
+    putAuthorized = <T>(url:string, body:any, contentType='application/json') : Promise<T> => {
+        return this.putCommon(url, body, commonAuthorizedHeader(contentType));
+    }
     postCommon = <T>(url:string, body:any, headers:any) : Promise<T> => {
         return new Promise<T>((resolve, reject) => {
             
            
             axios.post(url, body, {
+                headers: { ...headers }
+            }).then((response: AxiosResponse) => {
+                if (!response.data)
+                {
+                    reject(new Error("Invalid response data"));
+                    return;
+                }
+                resolve(response.data.result);
+            }).catch((err:AxiosError) =>{
+                reject(err.response?.data ?? new Error(err.message))
+            });
+        });
+    }
+    putCommon = <T>(url:string, body:any, headers:any) : Promise<T> => {
+        return new Promise<T>((resolve, reject) => {
+           
+            axios.put(url, body, {
+                headers: { ...headers }
+            }).then((response: AxiosResponse) => {
+                if (!response.data)
+                {
+                    reject(new Error("Invalid response data"));
+                    return;
+                }
+                resolve(response.data.result);
+            }).catch((err:AxiosError) =>{
+                reject(err.response?.data ?? new Error(err.message))
+            });
+        });
+    }
+    private deleteCommon = <T>(url:string, headers:any) : Promise<T> => {
+        return new Promise<T>((resolve, reject) => {
+            
+           
+            axios.delete(url,{
                 headers: { ...headers }
             }).then((response: AxiosResponse) => {
                 if (!response.data)
