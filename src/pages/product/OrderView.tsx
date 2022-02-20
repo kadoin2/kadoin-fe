@@ -5,6 +5,8 @@ import ErrorMessage from '../../components/messages/ErrorMessage';
 import AuthService from '../../services/AuthService';
 import ControlledComponent from '../ControlledComponent';
 import SearchResultItem from './../../models/product/SearchResultItem';
+import ProductService from './../../services/ProductService';
+import ProductSpec from './../../models/product/ProductSpec';
 interface Props 
 {
     item: SearchResultItem
@@ -16,12 +18,16 @@ class State
     phoneNumber: string  = "";
     note: string = "";
     address: string = "";
+    productSpec:ProductSpec | undefined;
 }
 export default class OrderView extends ControlledComponent<Props, State>
 {
     state: Readonly<State> = new State();
     @resolve(AuthService)
     private authService:AuthService;
+    @resolve(ProductService)
+    private productService:ProductService;
+    
     constructor(props:Props)
     {
         super(props);
@@ -30,6 +36,15 @@ export default class OrderView extends ControlledComponent<Props, State>
     componentDidMount()
     {
         this.setState({ loggedIn: this.authService.loggedIn, phoneNumber: this.authService.loggedUser?.phoneNumber ?? "" });
+        if (this.authService.loggedIn)
+        {
+            this.loadDetail();
+        }
+    }
+    loadDetail = () => {
+        this.productService.getDetail(this.props.item)
+            .then((spec) => this.setState({ productSpec: spec }))
+            .catch(console.error);
     }
     onSubmit = (e:FormEvent) => {
         e.preventDefault();
@@ -44,12 +59,23 @@ export default class OrderView extends ControlledComponent<Props, State>
                 </ErrorMessage>
             )
         }
+        const spec = this.state.productSpec;
         return (
             <div>
                 <h3 className='text-center'>Order product from <small>{this.props.item?.displayLink}</small></h3>
                 <div className='row w-100 mt-5'>
                     <div className='col-md-3'>
                         <img className='image' width={200} src={this.props.item.link} />
+                        <p/>
+                        { !spec ? 
+                          <i>Loading detail...</i> : 
+                          <div>
+                             <p style={{margin: 0}}>Name</p>
+                             <b>{spec.name}</b>
+                             <p style={{margin: 0}}>Price</p>
+                             <b>Rp. {spec.price}</b>
+                          </div>
+                        }
                     </div>
                     <div className='col-md-5'>
                         <form onSubmit={this.onSubmit}>

@@ -23,10 +23,7 @@ class ProductsPage extends BaseMasterDataPage<Product, BaseProps, State>
     get defaultItem(): Product { return new Product() }
     
     render(): ReactNode {
-        if (!this.validate()) {
-            return null;
-        }
-
+        
         if (this.state.showForm)
         {
 

@@ -20,9 +20,7 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
     get defaultItem(): User { return new User() }
     
     render(): ReactNode {
-        if (!this.validate()) {
-            return null;
-        }
+        
         const result = this.state.result;
         const items = result?.items;
         return (

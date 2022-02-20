@@ -105,14 +105,7 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     loadCurrentPage = () => {
         this.load(this.state.result.page, this.state.result.perPage);
     }
-    validate = () => {
-        if (this.authService.loggedIn == false || this.authService.loggedUser?.role !== 'Admin')
-        {
-            this.gotoHomePage();
-            return false;
-        }
-        return true;
-    }
+    
     get startingNumber()
     {
         return 1 +(this.state.result.page * this.state.result.perPage);
