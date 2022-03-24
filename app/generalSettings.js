@@ -6,8 +6,8 @@ const generalSetting = {
     },
      
     "hosts":{
-        "_api": "http://127.0.0.1:5000",
-        "api": "https://kadoin.herokuapp.com",
+        "api": "http://127.0.0.1:5000",
+        "_api": "https://kadoin.herokuapp.com",
         
     },
     
