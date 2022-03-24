@@ -110,17 +110,23 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     {
         return 1 +(this.state.result.page * this.state.result.perPage);
     }
-    protected actionButton = (item:M) => {
+    protected actionButton = (item:M, showDelete = true, showEdit = true) => {
         return (
             <Fragment>
+                { showEdit && 
                 <AnchorButton 
                     onClick={()=>this.edit(item)}
                     iconClass="fas fa-edit"
-                    className="btn btn-text clickable"/>
+                    className="btn btn-text clickable"
+                />
+                }
+                { showDelete &&
                 <AnchorButton 
                     onClick={()=>this.delete(item)}
                     className="btn btn-text text-danger"
-                    iconClass="fas fa-times"/>
+                    iconClass="fas fa-times"
+                />
+                }
             </Fragment>
         )
     }

@@ -23,7 +23,6 @@ class Home extends BasePage<BaseProps, State>
 
     constructor(props: any) {
         super(props);
-        this.title = 
         this.welcomingWord = Settings.App.uiSetting.defaultTitle;
     }
     componentDidMount() {
@@ -36,11 +35,7 @@ class Home extends BasePage<BaseProps, State>
                 words.push(this.welcomingWord[this.welcomingWord.length - (this.welcomingWord.length - words.length)]);
                 this.setState({ welcomingWords: words }, this.startDisplayWelcomingWord);
             }, 200);
-
         }
-    }
-    componentDidUpdate() {
-
     }
 
     render(): React.ReactNode {

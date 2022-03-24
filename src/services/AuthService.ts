@@ -6,6 +6,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { removeLoginKeyCookie, setLoginKeyCookie,commonAuthorizedHeader } from './../utils/restApiUtil';
 import ApplicationProfile from './../models/ApplicationProfile';
 import RestClient from './../apiClients/RestClient';
+import CustomEventHandler from "../utils/CustomEventHandler";
 
 
 const LOGIN_URL     = Settings.App.hosts.api + "/api/auth/login";
@@ -18,7 +19,7 @@ export default class AuthService {
      
     private _loggedUser:User | undefined;
     private _appProfile:ApplicationProfile | undefined;
-    private _onUserUpdate:Map<string, (user:User | undefined) =>any> = new Map();
+    public readonly onUserUpdated: CustomEventHandler<User | undefined> = new CustomEventHandler<User | undefined>();
 
     @inject(RestClient)
     private rest:RestClient;
@@ -36,14 +37,7 @@ export default class AuthService {
     
     private set loggedUser(value:User | undefined) { 
         this._loggedUser = value; 
-        this._onUserUpdate.forEach(action => action(value))
-    }
-
-    addOnUserUpdated = (key:string, action:(user:User|undefined) => any) => {
-        this._onUserUpdate.set(key, action);
-    }
-    removeOnUserUpdated = (key:string) => {
-        this._onUserUpdate.delete(key);
+        this.onUserUpdated.invoke(value);
     }
 
     loadApplication = () : Promise<ApplicationProfile> => {

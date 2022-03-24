@@ -11,14 +11,14 @@ interface Props
 export default class ActionButton extends Component<Props, any>
 {
     render(): ReactNode {
-        if (this.props.show != undefined && this.props.show === false)
-        {
+        if (this.props.show != undefined && this.props.show === false) {
             return null;
         }
+        const marginClass = this.props.children ? ' mr-3 ' : '';
         return (
             <button className={this.props.className} onClick={this.props.onClick}>
                 {this.props.iconClass?
-                <i className={this.props.iconClass+ " mr-3"}/> : null }
+                <i className={this.props.iconClass+marginClass}/> : null }
                 {this.props.children}
             </button>
         )

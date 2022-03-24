@@ -36,6 +36,12 @@ class UserSection extends Component<Props, State>
     toggleDropdown = () => {
         this.setState({ showDropdown: !this.state.showDropdown });
     }
+    onMenuClick = (path: string) => {
+        if (this.props.navigate) {
+            this.props.navigate(path);
+            this.setState({ showDropdown: false });
+        }
+    }
     render(): ReactNode {
 
         return (
@@ -49,12 +55,12 @@ class UserSection extends Component<Props, State>
                         style={{width: '200px', zIndex: 1, position: 'relative'}}
                         className="bg-light border border-gray rounded text-left pt-3 pb-3" >
                         { this.props.user.role == 'Admin' ?
-                        <Link className="btn btn-text text-success" to="/admin">
+                        <a className="btn btn-text text-success" onClick={() => this.onMenuClick("/admin")}>
                             <i className="fas fa-tachometer-alt mr-3"/>Admin Area
-                        </Link> : null }
-                        <Link className="btn btn-text text-info" to="/myorder">
+                        </a> : null }
+                        <a className="btn btn-text text-info" onClick={() => this.onMenuClick("/myorder")}>
                             <i className="fas fa-shopping-cart mr-3"/>My Orders
-                        </Link>
+                        </a>
                         <a className="btn btn-text text-danger" onClick={this.logout}>
                             <i className="fas fa-sign-out-alt mr-3"/>Logout
                         </a>

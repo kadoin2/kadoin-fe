@@ -6,6 +6,7 @@ import BaseMasterDataPage from "./BaseMasterDataPage";
 import BaseMasterDataState from './../../models/BaseMasterDataState';
 import User from "../../models/User";
 import PaginationButtons from "../../components/buttons/PaginationButtons";
+import ActionButton from "../../components/buttons/ActionButton";
 
 class State extends BaseMasterDataState<User>
 {
@@ -41,6 +42,7 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
                                     <th>Name</th>
                                     <th>Display Name</th>
                                     <th>Phone</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,6 +54,9 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
                                             <td>{item.name}</td>
                                             <td>{item.displayName}</td>
                                             <td>{item.phoneNumber}</td>
+                                            <td>
+                                                {this.actionButton(item, true, false)}
+                                            </td>
                                         </tr>
                                     )
                                 })}

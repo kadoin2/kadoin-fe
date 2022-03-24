@@ -32,24 +32,20 @@ class HeaderView extends ControlledComponent<Props, State>
 
     private _user:User | undefined;
     
-    componentDidMount() 
-    {
-        this.routingService.registerCallback("header", console.log);
-        this.authService.addOnUserUpdated("header", this.onUserUpdated);
+    componentDidMount() {
+        this.routingService.routeUpdateCallbacks.add("header", console.log);
+        this.authService.onUserUpdated.add("header", this.onUserUpdated);
     }
-    componentWillUnmount()
-    {
-        this.authService.removeOnUserUpdated("header");
+    componentWillUnmount() {
+        this.authService.onUserUpdated.remove("header");
     }
     gotoLoginPage = () => {
-        if (this.props.navigate)
-        {
+        if (this.props.navigate) {
             this.props.navigate("/login");
         }
     }
     onUserUpdated = (user: User | undefined) => {
-        if (this._user != undefined && user == undefined)
-        {
+        if (this._user != undefined && user == undefined) {
             this.gotoLoginPage();
         }
         this._user = user;
@@ -57,8 +53,7 @@ class HeaderView extends ControlledComponent<Props, State>
     }
 
     private navigate = (url:string) => {
-        if (this.props.navigate == undefined)
-        {
+        if (this.props.navigate == undefined) {
             console.warn("no props: navigate");
             return;
         }
@@ -71,12 +66,11 @@ class HeaderView extends ControlledComponent<Props, State>
 
     onFormSearchSubmit = (e:FormEvent) => {
         e.preventDefault();
-        if (!this.state.searchKey && this.state.searchKey.trim() == "")
-        {
+        if (!this.state.searchKey && this.state.searchKey.trim() == "") {
             return;
         }
         this.navigate("/search/"+this.state.searchKey);
-        this.evtService.triggerProductSearchUpdate(this.state.searchKey);
+        this.evtService.onProductSearchKeyUpdate.invoke(this.state.searchKey);
     }
 
     render() {

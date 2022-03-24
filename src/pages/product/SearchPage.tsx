@@ -11,8 +11,9 @@ import { resolve } from 'inversify-react';
 import ErrorMessage from "../../components/messages/ErrorMessage";
 import EventService from './../../services/EventService';
 import SearchResultItem from './../../models/product/SearchResultItem';
-import DialogService from './../../services/DialogService';
 import OrderView from "./OrderView";
+import './SearchPage.scss';
+import AnchorButton from "../../components/buttons/AnchorButton";
 
 class State extends BaseState
 {
@@ -29,23 +30,20 @@ class SearchPage extends BasePage<BaseProps, State>
     @resolve(EventService)
     private evtService:EventService;
 
-    constructor(props:any)
-    {
+    constructor(props:any) {
         super(props, false, "Search");
     }
 
-    componentDidMount(): void {
-        this.evtService.addOnProductSearchUpdate("searchpage", this.search);
-        if (!this.props.routeParams || !this.props.routeParams['searchKey'])
-        {
+    componentDidMount() {
+        this.evtService.onProductSearchKeyUpdate.add("searchpage", this.search);
+        if (!this.props.routeParams || !this.props.routeParams['searchKey']) {
             return;
         }
         this.search(this.props.routeParams['searchKey']);
     }
 
-    componentWillUnmount()
-    {
-        this.evtService.removeOnProductSearchUpdate("searchpage");
+    componentWillUnmount() {
+        this.evtService.onProductSearchKeyUpdate.remove("searchpage");
     }
 
     search = (key:string, startIndex:number = 1) => {
@@ -60,8 +58,7 @@ class SearchPage extends BasePage<BaseProps, State>
             })
     }
     gotoIndex = (i:number) => {
-        if (!this.state.searchKey)
-        {
+        if (!this.state.searchKey) {
             return;
         }
         this.search(this.state.searchKey, i);
@@ -70,8 +67,7 @@ class SearchPage extends BasePage<BaseProps, State>
         this.dialog.showContent("Order Item", <OrderView item={item}/>)
     }
     render(): ReactNode {
-        if (!this.state.searchKey)
-        {
+        if (!this.state.searchKey) {
             return (
                 <ViewTemplate>
                     <p>Please provide search key</p>
@@ -92,7 +88,8 @@ class SearchPage extends BasePage<BaseProps, State>
                         gotoIndex={this.gotoIndex}
                         searchKey={this.state.searchKey} 
                         result={this.state.searchResult}
-                        order={this.order}/>}
+                        order={this.order}
+                    />}
                 </div>
             </ViewTemplate>
         )
@@ -110,44 +107,48 @@ const SearchResult = (props:{
     const reqPage  = props.result.queries.request;
     return (
         <Fragment>
-             <div className="col-md-12">
+             <div className="col-md-6 bg-light my-2">
                 <h4>Search Result: <b>"{props.searchKey}"</b> </h4>
             </div>
-            <div className="col-md-12 mt-2 mb-2 text-center">
-            {reqPage && reqPage.length > 0 && reqPage[0].startIndex > 1?
-                <a className="btn btn-outline-primary btn-sm mr-2" onClick={()=>props.gotoIndex(reqPage[0].startIndex - reqPage[0].count)}>
-                    Prev
-                </a> : null 
-            }        
-            {nextPage && nextPage.length > 0?
-                <a className="btn btn-outline-primary btn-sm" onClick={()=>props.gotoIndex(nextPage[0].startIndex)}>
-                    Next
-                </a> : null 
-            }
+            <div className="col-md-6 bg-light my-2 product-pagination-button">
+                <nav>
+                    {reqPage && reqPage.length > 0 && reqPage[0].startIndex > 1 &&
+                        <a className="btn btn-outline-primary btn-sm mr-2" onClick={()=>props.gotoIndex(reqPage[0].startIndex - reqPage[0].count)}>
+                            Prev
+                        </a>
+                    }        
+                    {nextPage && nextPage.length > 0 &&
+                        <a className="btn btn-outline-primary btn-sm" onClick={()=>props.gotoIndex(nextPage[0].startIndex)}>
+                            Next
+                        </a>
+                    }
+                </nav>
             </div>
             {props.result.items.map((item)=>{
 
                 return (
                     <div key={"search_result_"+item.link} className="col-md-2 mt-2">
                         <div className="border border-gray pt-1 pb-1 pl-1 pr-1">
-                            <div style={{
-                                backgroundImage: `url(${item.image.thumbnailLink})`,
-                                backgroundPosition: 'center',
-                                backgroundRepeat: 'no-repeat',
-                                backgroundSize: 'cover',
-                                height: 100
+                            <div className="product-item-image" style={{
+                                backgroundImage: `url(${item.image.thumbnailLink})`
                             }}>
 
                             </div>
-                            <a target={"_blank"} href={item.image.contextLink} className="badge bg-light">
-                                {item.displayLink}
-                            </a>
-                            <label dangerouslySetInnerHTML={{
-                                __html: item.htmlTitle
-                            }}></label>
-                            <a className="btn btn-primary btn-sm" onClick={()=>props.order(item)}>
-                                Order
-                            </a>
+                            <div className="text-center">
+                                <a target={"_blank"} href={item.image.contextLink} className="badge bg-light">
+                                    {item.displayLink}
+                                </a>
+                                <label className="text-left" dangerouslySetInnerHTML={{
+                                    __html: item.htmlTitle
+                                }}></label>
+                                <AnchorButton
+                                    iconClass="fas fa-shopping-cart"
+                                    className="btn btn-success btn-sm"
+                                    onClick={() => props.order(item)}
+                                >
+                                    Order
+                                </AnchorButton>
+                            </div>
                         </div>
                     </div>
                 )

@@ -1,0 +1,18 @@
+.product-pagination-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    & > nav {
+        position: absolute;
+        right: 5px;
+        margin: auto;
+    };
+}
+
+.product-item-image {
+    background-position: center;
+    background-repeat: no-repeat;;
+    background-size: cover;;
+    height: 100px;
+}

@@ -8,6 +8,7 @@ import PaginationButtons from "../../components/buttons/PaginationButtons";
 import Product from './../../models/Product';
 import ErrorMessage from "../../components/messages/ErrorMessage";
 import AnchorButton from "../../components/buttons/AnchorButton";
+import { currencyNumber } from "../../utils/stringUtil";
 
 class State extends BaseMasterDataState<Product>
 {
@@ -100,7 +101,7 @@ class ProductsPage extends BaseMasterDataPage<Product, BaseProps, State>
                                             <td>{this.startingNumber + i}</td>
                                             <td>{item.name}</td>
                                             <td>{item.description}</td>
-                                            <td>{item.price}</td>
+                                            <td>{currencyNumber(item.price)}</td>
                                             <td>
                                                 <img className="border"  alt={item.image} src={item.image} width={50} height={50} />
                                                 <br/>
